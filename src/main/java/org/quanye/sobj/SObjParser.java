@@ -107,6 +107,31 @@ public class SObjParser {
         return result.toString();
     }
 
+    /**
+     * Parse the SObj and override the `instance`
+     *
+     * @param sObj     SObj
+     * @param instance Override instance
+     * @param <T>      instance type
+     * @return overrode instance
+     * @throws InValidSObjSyntaxException Throws the exception while the SObj syntax is non-valid
+     */
+    public static <T> T toObject(String sObj, T instance) throws InValidSObjSyntaxException {
+        sObj = S$.removeBoilerplateEmptyCode(sObj);
+        if (!S$.isValidSexp(sObj)) {
+            throw new InValidSObjSyntaxException("invalid SObj syntax");
+        }
+        SObjNode lo = toAST(sObj);
+        Class<?> clazz = instance.getClass();
+        if (clazz.isArray()) {
+            Class<?> compClazz = clazz.getComponentType();
+            String pkgName = compClazz.getPackage().getName();
+            return setArrayValue(lo, pkgName, compClazz.getSimpleName());
+        } else {
+            return setValue(lo, instance);
+        }
+    }
+
 
     /**
      * Parse the SObj to the Java Object
@@ -115,7 +140,7 @@ public class SObjParser {
      * @param clazz Resulting object's type
      * @param <T>   Object's generic type
      * @return Object
-     * @throws InValidSObjSyntaxException Throws the exception when SObj syntax is non-valid
+     * @throws InValidSObjSyntaxException Throws the exception while the SObj syntax is non-valid
      */
     public static <T> T toObject(String sexp, Class<T> clazz) throws InValidSObjSyntaxException {
         sexp = S$.removeBoilerplateEmptyCode(sexp);

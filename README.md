@@ -99,7 +99,7 @@ User{id=1, name='DavidChen', age=25, birth=Thu Sep 24 09:50:07 CST 2020, glasses
 * `(key value)` - Key-Value Pair
 * `(*list ...)` - Array
 
-## Usage
+## Usage Example
 > 1.Basic Usage.
 ```java
 import org.quanye.sobj.SObjParser;
@@ -127,4 +127,16 @@ if (glassesNode != null) {
     // then, use can use this glasses Object below
     System.out.println(glasses.getDegree());
 }
+```
+> 3.SObj Minimize
+```java
+User u1 = new User(xxx, yyy, ....);
+String u1SObj = SObjParser.fromObject(u1);
+String minimizeU1SObj = SObjParser.minimize(u1SObj);
+```
+> 4.SObj Override
+```java
+User defaultU1 = new User(yyy, zzz, xxx, );
+String userDefinedSObj = "(*obj(id 2)(uid 0)(name \"Quanyec\")(age 26)(birth \"1995-09-24 09:50,07\")(glasses (*obj(price 115.5)(id 1)(degree 103.3)(color \"YELLOW-PURPLE\")))(height 167.3))";
+User userDefinedU1 = SObjParser.toObject(userDefinedSObj, defaultU1);
 ```

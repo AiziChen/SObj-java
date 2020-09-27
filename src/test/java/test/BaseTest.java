@@ -102,4 +102,14 @@ public class BaseTest {
         Double glassDegree = node.getNode("glasses").getValue(Glasses.class).getDegree();
         assert glassDegree.equals(u1.getGlasses().getDegree());
     }
+
+
+    @Test
+    public void toObjectOverrideTest() throws InValidSObjSyntaxException {
+        String userDefinedSObj = "(*obj(id 2)(uid 0)(name \"Quanyec\")(age 26)(birth \"1995-09-24 09:50,07\")(glasses (*obj(price 115.5)(id 1)(degree 103.3)(color \"YELLOW-PURPLE\")))(height 167.3))";
+        User defaultU1 = u1;
+        User userDefinedU1 = SObjParser.toObject(userDefinedSObj, defaultU1);
+        System.out.println("=====toObject Override Test Result=====\n" + userDefinedU1);
+    }
+
 }
