@@ -8,29 +8,24 @@ import org.quanye.sobj.tools.S$;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Cons
- * This source code is license on the Apache-License v2.0
+ * SObjNode
+ * `SObj` itself is a structured data, so it can don't need to parse
  *
- * @author QuanyeChen
+ * @author Quanyec
  */
 public class SObjNode {
-    private String nodeValue;
-    private SObjNode car;
-    private SObjNode cdr;
+    private final String nodeValue;
 
-    public SObjNode(String nodeValue) {
-        this.nodeValue = nodeValue;
-    }
-
-    public String getNodeValue() {
-        return nodeValue;
+    public SObjNode(String sObj) {
+        this.nodeValue = sObj;
     }
 
     public SObjNode getNode(String key) {
         SObjNode node = getCdr();
         while (true) {
-            if (node.getCar().nodeValue.equals(key)) {
-                return node;
+            SObjNode pair = node.getCar();
+            if (pair.getCar().nodeValue.equals(key)) {
+                return pair;
             } else {
                 node = node.getCdr();
                 if (node == null) {
@@ -59,32 +54,46 @@ public class SObjNode {
         }
     }
 
-    public void setNodeValue(String nodeValue) {
-        this.nodeValue = nodeValue;
-    }
-
     public SObjNode getCar() {
-        return car;
-    }
-
-    public void setCar(SObjNode car) {
-        this.car = car;
+        if (S$.isPair(nodeValue)) {
+            return new SObjNode(S$.car(nodeValue));
+        } else {
+            return null;
+        }
     }
 
     public SObjNode getCdr() {
-        return cdr;
+        if (S$.isPair(nodeValue)) {
+            String nv = S$.cdr(nodeValue);
+            if (S$.isNull(nv)) {
+                return null;
+            } else {
+                return new SObjNode(nv);
+            }
+        } else {
+            return null;
+        }
     }
 
-    public void setCdr(SObjNode cdr) {
-        this.cdr = cdr;
+    public String getNodeValue() {
+        return nodeValue;
     }
 
-    @Override
-    public String toString() {
-        return "Cons{" +
-                "carValue='" + nodeValue + '\'' +
-                ", car=" + car +
-                ", cdr=" + cdr +
-                '}';
+    /**
+     * Count nodeValue's length
+     *
+     * @return equal to 0 where nodeValue is `Null`, or -1 where nodeValue is not a List, or the List element length
+     */
+    public long length() {
+        if (S$.isList(nodeValue)) {
+            return S$.length(nodeValue);
+        } else {
+            return -1;
+        }
     }
+
+    public boolean isList() {
+        return S$.isList(nodeValue);
+    }
+
 }

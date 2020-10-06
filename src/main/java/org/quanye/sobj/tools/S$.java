@@ -76,6 +76,12 @@ public class S$ {
         return sexp.equals(NULL);
     }
 
+    /**
+     * similar scheme's isList
+     **/
+    public static boolean isList(String sexp) {
+        return sexp.startsWith(BRACKET_START);
+    }
 
     public static boolean isPair(String sexp) {
         if (!sexp.startsWith(BRACKET_START)) {
@@ -137,4 +143,11 @@ public class S$ {
         return BRACKET_START + sexp.substring(i + 1);
     }
 
+    public static long length(String sObj) {
+        if (S$.isNull(sObj)) {
+            return 0;
+        } else {
+            return 1 + length(S$.cdr(sObj));
+        }
+    }
 }

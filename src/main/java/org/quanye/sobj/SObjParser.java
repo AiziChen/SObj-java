@@ -119,9 +119,9 @@ public class SObjParser {
     public static <T> T toObject(String sObj, T instance) throws InValidSObjSyntaxException {
         sObj = S$.removeBoilerplateEmptyCode(sObj);
         if (!S$.isValidSexp(sObj)) {
-            throw new InValidSObjSyntaxException("invalid SObj syntax");
+            throw new InValidSObjSyntaxException("Invalid SObj syntax");
         }
-        SObjNode lo = toAST(sObj);
+        SObjNode lo = new SObjNode(sObj);
         Class<?> clazz = instance.getClass();
         if (clazz.isArray()) {
             Class<?> compClazz = clazz.getComponentType();
@@ -136,18 +136,18 @@ public class SObjParser {
     /**
      * Parse the SObj to the Java Object
      *
-     * @param sexp  SObj
+     * @param sObj  SObj
      * @param clazz Resulting object's type
      * @param <T>   Object's generic type
      * @return Object
      * @throws InValidSObjSyntaxException Throws the exception while the SObj syntax is non-valid
      */
-    public static <T> T toObject(String sexp, Class<T> clazz) throws InValidSObjSyntaxException {
-        sexp = S$.removeBoilerplateEmptyCode(sexp);
-        if (!S$.isValidSexp(sexp)) {
-            throw new InValidSObjSyntaxException("invalid SObj syntax");
+    public static <T> T toObject(String sObj, Class<T> clazz) throws InValidSObjSyntaxException {
+        sObj = S$.removeBoilerplateEmptyCode(sObj);
+        if (!S$.isValidSexp(sObj)) {
+            throw new InValidSObjSyntaxException("Invalid SObj syntax");
         }
-        SObjNode lo = toAST(sexp);
+        SObjNode lo = new SObjNode(sObj);
         if (clazz.isArray()) {
             Class<?> compClazz = clazz.getComponentType();
             String pkgName = compClazz.getPackage().getName();
@@ -165,7 +165,7 @@ public class SObjParser {
     private static <T> T setArrayValue(SObjNode sObjNode, String pkgName, String compClazzName) {
         List<Object> list = new LinkedList<>();
         SObjNode arrEleNode = sObjNode.getCdr();
-        if (C$.isSObj(arrEleNode.getNodeValue())) {
+        if (C$.isSObj(arrEleNode.getCar().getNodeValue())) {
             try {
                 Class<?> compClazz = Class.forName(String.format("%s.%s", pkgName, compClazzName));
                 while (arrEleNode != null && arrEleNode.getCar() != null) {
@@ -185,9 +185,9 @@ public class SObjParser {
                 e.printStackTrace();
             }
         } else {
-            String carV = arrEleNode.getNodeValue();
+            String carV = arrEleNode.getCar().getNodeValue();
             while (arrEleNode != null) {
-                String v = arrEleNode.getNodeValue();
+                String v = arrEleNode.getCar().getNodeValue();
                 v = C$.trimStr(v);
                 list.add(v);
                 arrEleNode = arrEleNode.getCdr();
@@ -205,15 +205,15 @@ public class SObjParser {
     }
 
 
-    private static <T> T setValue(SObjNode sobjNode, T target) {
-        SObjNode firstV = sobjNode.getCar();
-        SObjNode leftV = sobjNode.getCdr();
+    private static <T> T setValue(SObjNode sObjNode, T target) {
+        SObjNode firstV = sObjNode.getCar();
+        SObjNode leftV = sObjNode.getCdr();
 
         // Key
-        if (firstV == null && leftV != null) {
-            String key = sobjNode.getNodeValue();
+        if (firstV != null && leftV != null) {
+            String key = firstV.getNodeValue();
             if (!(key.equals(OBJECT_NAME) || key.equals(LIST_NAME))) {
-                String value = leftV.getNodeValue();
+                String value = leftV.getCar().getNodeValue();
                 if (C$.isSObj(value)) {
                     String pkgName = target.getClass().getPackage().getName();
                     String clazzName = String.format("%s%s", key.substring(0, 1).toUpperCase(), key.substring(1));
@@ -231,7 +231,7 @@ public class SObjParser {
                     putField(target, key, arrInstance);
                     // *list process had been done above, don't need to process by `setValue` ever.
                     return arrInstance;
-                } else {
+                } else if (!S$.isPair(value)) {
                     value = C$.trimStr(value);
                     putField(target, key, value);
                 }
@@ -239,35 +239,17 @@ public class SObjParser {
         }
 
         // car is a list
-        if (firstV != null) {
+        if (firstV != null && firstV.isList()) {
             setValue(firstV, target);
         }
 
         // not end list
-        if (leftV != null) {
+        if (leftV != null && leftV.isList()) {
             setValue(leftV, target);
         }
 
         return target;
     }
-
-
-    private static SObjNode toAST(String sexp) {
-        String firstV = S$.car(sexp);
-        String leftV = S$.cdr(sexp);
-        SObjNode result = new SObjNode(firstV);
-
-        if (S$.isPair(firstV)) {
-            result.setCar(toAST(firstV));
-        }
-
-        if (S$.isPair(leftV)) {
-            result.setCdr(toAST(leftV));
-        }
-
-        return result;
-    }
-
 
     private static <T> void putField(T target, String key, String value) {
         Field field = C$.getFieldByName(target, key);
@@ -322,7 +304,7 @@ public class SObjParser {
 
 
     public static SObjNode getRootNode(String sObj) {
-        return toAST(sObj);
+        return new SObjNode(sObj);
     }
 
 

@@ -1,4 +1,5 @@
 import org.junit.Test;
+import org.quanye.sobj.tools.S$;
 
 import static org.quanye.sobj.tools.S$.isValidSexp;
 import static org.quanye.sobj.tools.S$.removeBoilerplateEmptyCode;
@@ -41,5 +42,26 @@ public class SExpTest {
 
         s = ")))(((";
         assert !isValidSexp(s);
+    }
+
+    @Test
+    public void lengthTest() {
+        String sexp = "(a b c)";
+        assert S$.length(sexp) == 3;
+
+        sexp = "((a b) c d e)";
+        assert S$.length(sexp) == 4;
+
+        sexp = "((((a b)) c) d e)";
+        assert S$.length(sexp) == 3;
+
+        sexp = "()";
+        assert S$.length(sexp) == 0;
+
+        sexp = "((1))";
+        assert S$.length(sexp) == 1;
+
+        sexp = "((()()()))";
+        assert S$.length(sexp) == 1;
     }
 }
