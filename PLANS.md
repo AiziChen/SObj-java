@@ -9,3 +9,5 @@
 * configuration：support camelCase-word to underlined-word
 * bug fix: remove the array override
 * add support `Collection<T>` and `Map<T>` types for the SObj's list-type
+* add `JSON` convert to `SObj` function: `toSobj(json)`
+* add `SObj` convert to `JSON` function: `toJson(sobj)`
