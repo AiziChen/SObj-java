@@ -231,7 +231,7 @@ public class SObjParser {
                     putField(target, key, arrInstance);
                     // *list process had been done above, don't need to process by `setValue` ever.
                     return arrInstance;
-                } else if (!S$.isPair(value)) {
+                } else if (!S$.isList(value)) {
                     value = C$.trimStr(value);
                     putField(target, key, value);
                 }
