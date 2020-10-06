@@ -77,7 +77,7 @@ public class S$ {
     }
 
     /**
-     * similar scheme's isList
+     * Similar to Scheme's `isList` procedure
      **/
     public static boolean isList(String sexp) {
         return sexp.startsWith(BRACKET_START);
