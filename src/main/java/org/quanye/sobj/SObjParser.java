@@ -124,9 +124,7 @@ public class SObjParser {
         SObjNode lo = new SObjNode(sObj);
         Class<?> clazz = instance.getClass();
         if (clazz.isArray()) {
-            Class<?> compClazz = clazz.getComponentType();
-            String pkgName = compClazz.getPackage().getName();
-            return setArrayValue(lo, pkgName, compClazz.getSimpleName());
+            throw new RuntimeException("Array override is not support.");
         } else {
             return setValue(lo, instance);
         }
