@@ -8,5 +8,3 @@
 * add beautify SObj function
 * support the configurations and support the `default-configurations`
 * configuration：support camelCase-word to underlined-word
-* add `JSON` convert to `SObj` function: `toSobj(json)`
-* add `SObj` convert to `JSON` function: `toJson(sobj)`
