@@ -78,15 +78,15 @@ public class SObjParser {
                 }
                 if (value != null) {
                     if (value instanceof String) {
-                        value = String.format("\"%s\"", value);
+                        value = "\"" + value + "\"";
                     } else if (value instanceof Date) {
                         Object tmp = value;
-                        value = String.format("\"%s\"", sdf.format(value));
+                        value = "\"" + sdf.format(value) + "\"";
                         for (Annotation an : field.getAnnotations()) {
                             if (an instanceof DateFormat) {
                                 DateFormat df = (DateFormat) an;
                                 sdf.applyPattern(df.value());
-                                value = String.format("\"%s\"", sdf.format((Date) tmp));
+                                value = "\"" + sdf.format((Date) tmp) + "\"";
                             }
                         }
                     } else if (value instanceof Boolean) {
@@ -165,7 +165,7 @@ public class SObjParser {
         SObjNode arrEleNode = sObjNode.getCdr();
         if (C$.isSObj(arrEleNode.getCar().getNodeValue())) {
             try {
-                Class<?> compClazz = Class.forName(String.format("%s.%s", pkgName, compClazzName));
+                Class<?> compClazz = Class.forName(pkgName + "." + compClazzName);
                 while (arrEleNode != null && arrEleNode.getCar() != null) {
                     Object instance = setValue(arrEleNode.getCar(), compClazz.getDeclaredConstructor().newInstance());
                     list.add(instance);
@@ -214,7 +214,7 @@ public class SObjParser {
                 String value = leftV.getCar().getNodeValue();
                 if (C$.isSObj(value)) {
                     String pkgName = target.getClass().getPackage().getName();
-                    String clazzName = String.format("%s%s", key.substring(0, 1).toUpperCase(), key.substring(1));
+                    String clazzName = key.substring(0, 1).toUpperCase() + key.substring(1);
                     try {
                         Class<?> clazz = Class.forName(pkgName + "." + clazzName);
                         Object instance = setValue(leftV.getCar(), clazz.getDeclaredConstructor().newInstance());
@@ -224,7 +224,7 @@ public class SObjParser {
                     }
                 } else if (C$.isList(value)) {
                     String pkgName = target.getClass().getPackage().getName();
-                    String clazzName = String.format("%s%s", key.substring(0, 1).toUpperCase(), key.substring(1));
+                    String clazzName = key.substring(0, 1).toUpperCase() + key.substring(1);
                     T arrInstance = setArrayValue(leftV.getCar(), pkgName, clazzName);
                     putField(target, key, arrInstance);
                     // *list process had been done above, don't need to process by `setValue` ever.
