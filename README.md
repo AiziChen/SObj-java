@@ -57,7 +57,7 @@ https://github.com/AiziChen/SObj-typescript.git
   (glasses (*obj
     (id 1)
     (degree 203.3)
-    (color "RED-BLACK")))
+    (color "RED \"And\" BLACK")))
   (height 167.3)
   (goods (*list
     (*obj (name "火龙果")
@@ -80,18 +80,18 @@ https://github.com/AiziChen/SObj-typescript.git
   (*obj (name "雪梨")
     (price 3.2)
     (isVegetable #f))
-    (*obj (name "西红柿")
+  (*obj (name "西红柿")
     (price 2.5)
     (isVegetable #t)))
 ```
 
 ### Performance Test - In (Intel I3 8300, JDK 11.0.8)
 ```shell
-(*list(*obj(name "火龙果")(price 2.3)(isVegetable #f))(*obj(name "雪梨")(price 3.2)(isVegetable #f))(*obj(name "西红柿")(price 2.5)(isVegetable #t)))
+(*obj(id 1)(name "DavidChen")(age 25)(birth "2020-10-15 22:18,10")(glasses (*obj(id 1)(degree 203.3)(color "RED \"And\" BLACK")))(height 167.3)(goods (*list(*obj(name "火龙果")(price 2.3)(isVegetable #f))(*obj(name "雪梨")(price 3.2)(isVegetable #f))(*obj(name "西红柿")(price 2.5)(isVegetable #t))))(behaviors (*list"Shopping""Running""Football")))
 >> From 9999 SObj total time: 357ms <<
 --------------------------------------------
 User{id=1, name='DavidChen', age=25, birth=Thu Sep 24 09:50:07 CST 2020, glasses=Glasses{id=1, degree=203.3, color=RED-BLACK}, height=167.3, goods=[Goods{name='火龙果', price=2.3, isVegetable=false}, Goods{name='雪梨', price=3.2, isVegetable=false}, Goods{name='西红柿', price=2.5, isVegetable=true}], behaviors=[Shopping, Running, Football]}
->> Parse 9999 objects total time: 1333ms <<
+>> Parse 9999 objects total time: 1284ms <<
 ```
 ## Syntax
 * `(*obj ...)`  - Object

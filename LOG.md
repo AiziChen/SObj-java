@@ -10,11 +10,12 @@ make less memory usage. see above for details.
 by changing the `String.format` to `StringBuilder.append()...`.
 
 ## 2020-10-15
-* Bug fix
-fixed inner-string parsed bug & added new tests for it
-* Performance improved
+* Bug fix:
+1. fixed inner-string parsed bug & added new tests for it
+2. fixed symbol in car&cdr functioning bugs
+* Performance improved:
 deserialize performance improved
-* `class name` changed
+* `class name` changed:
 change `InValidSyntaxException` to `InvalidSyntaxExeption`
 
 ## later
