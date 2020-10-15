@@ -67,6 +67,9 @@ public class SExpTest {
         sexp = "((((a b)) c) \"d\" 'e)";
         assert S$.length(sexp) == 3;
 
+        sexp = "((((a b)) c) 'e \"d\")";
+        assert S$.length(sexp) == 3;
+
         sexp = "()";
         assert S$.length(sexp) == 0;
 

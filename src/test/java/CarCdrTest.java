@@ -50,8 +50,15 @@ public class CarCdrTest {
 
         sexp = "(\"Shop\\\"ping\" \"Run \\\" ning\" \"Football\")";
         first = S$.car(sexp);
-        System.out.println(first);
         assert first.equals("\"Shop\\\"ping\"");
+
+        sexp = "('a 'b 'c)";
+        first = S$.car(sexp);
+        assert first.equals("'a");
+
+        sexp = "('e)";
+        first = S$.car(sexp);
+        assert first.equals("'e");
     }
 
     @Test

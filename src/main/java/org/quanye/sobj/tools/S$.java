@@ -116,21 +116,15 @@ public class S$ {
                     if ((i + 1) < sLen && sexp.charAt(i + 1) == '\"') {
                         i++;
                     }
-                } else if (c == '\"'){
+                } else if (c == '\"') {
                     i++;
                     break;
                 }
             }
         } else if (sexp.charAt(1) == '\'') {
-            for (i = 2; i < sexp.length(); ++i) {
-                char c = sexp.charAt(i);
-                if (c == BRACKET_CLOSE_C || c == SEPARATOR_C) {
-                    i++;
-                    break;
-                }
-            }
+            return '\'' + car(sexp.substring(1, sLen));
         } else {
-            for (; i < sexp.length(); ++i) {
+            for (; i < sLen; ++i) {
                 char c = sexp.charAt(i);
                 if (c == BRACKET_START_C || c == SEPARATOR_C || c == BRACKET_CLOSE_C || c == '\"') {
                     break;
@@ -149,6 +143,7 @@ public class S$ {
     }
 
     public static long length(String sObj) {
+        System.out.println(sObj);
         if (S$.isNull(sObj)) {
             return 0;
         } else {
