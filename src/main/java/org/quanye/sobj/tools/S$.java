@@ -143,7 +143,6 @@ public class S$ {
     }
 
     public static long length(String sObj) {
-        System.out.println(sObj);
         if (S$.isNull(sObj)) {
             return 0;
         } else {
