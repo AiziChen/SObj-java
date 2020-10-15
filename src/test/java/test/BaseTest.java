@@ -2,7 +2,7 @@ package test;
 
 import org.junit.Test;
 import org.quanye.sobj.SObjParser;
-import org.quanye.sobj.exception.InValidSObjSyntaxException;
+import org.quanye.sobj.exception.InvalidSObjSyntaxException;
 import org.quanye.sobj.struct.SObjNode;
 import test.domain.Glasses;
 import test.domain.Goods;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class BaseTest {
-    Glasses glasses = new Glasses(1, 203.3, "RED-BLACK");
+    Glasses glasses = new Glasses(1, 203.3, "RED \\\"And\\\" BLACK");
     Goods[] goodss = {
             new Goods("火龙果", 2.3F, false),
             new Goods("雪梨", 3.2F, false),
@@ -45,7 +45,7 @@ public class BaseTest {
 
 
     @Test
-    public void toObjectTest() throws InValidSObjSyntaxException {
+    public void toObjectTest() throws InvalidSObjSyntaxException {
         String u1SObj = SObjParser.fromObject(u1);
         // Print the result object
         User result = SObjParser.toObject(u1SObj, User.class);
@@ -58,7 +58,7 @@ public class BaseTest {
     }
 
     @Test
-    public void toObjectPerformanceTest() throws InValidSObjSyntaxException {
+    public void toObjectPerformanceTest() throws InvalidSObjSyntaxException {
         String u1SObj = SObjParser.fromObject(u1);
         // Check parse 9999s user object
         long before = System.currentTimeMillis();
@@ -71,7 +71,7 @@ public class BaseTest {
 
 
     @Test
-    public void lessVariableTest() throws InValidSObjSyntaxException {
+    public void lessVariableTest() throws InvalidSObjSyntaxException {
         String sobj1 = "(*obj(id 1)(uid 0)(name \"DavidChen\")(age 25)(birth \"2020-09-24 09:50,07\")(glasses (*obj(price 115.5)(id 1)(degree 203.3)(color \"RED-BLACK\")))(height 167.3))";
         // Converting successful required:
         User lessVariableUser = SObjParser.toObject(sobj1, User.class);
@@ -83,7 +83,7 @@ public class BaseTest {
 
 
     @Test
-    public void minimizeTest() throws InValidSObjSyntaxException {
+    public void minimizeTest() throws InvalidSObjSyntaxException {
         String u1SObj = SObjParser.fromObject(u1);
         String minimizeU1SObj = SObjParser.minimize(u1SObj);
         System.out.println("=====minimized test result=====\n" + minimizeU1SObj);
@@ -105,7 +105,7 @@ public class BaseTest {
 
 
     @Test
-    public void toObjectOverrideTest() throws InValidSObjSyntaxException {
+    public void toObjectOverrideTest() throws InvalidSObjSyntaxException {
         String userDefinedSObj = "(*obj(id 2)(uid 0)(name \"Quanyec\")(age 26)(birth \"1995-09-24 09:50,07\")(glasses (*obj(price 115.5)(id 1)(degree 103.3)(color \"YELLOW-PURPLE\")))(height 167.3))";
         User defaultU1 = u1;
         User userDefinedU1 = SObjParser.toObject(userDefinedSObj, defaultU1);

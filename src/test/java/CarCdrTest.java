@@ -40,13 +40,18 @@ public class CarCdrTest {
         first = S$.car(sexp);
         assert first.equals("'('name)");
 
-        sexp = "(*list\"Shopping\"\"Running\"\"Football\")";
+        sexp = "(*list\"Shopping\"Ya.\"\"Running\"\"Football\")";
         first = S$.car(sexp);
         assert first.equals("*list");
 
         sexp = "(*list \"Shopping\" \"Running\" \"Football\")";
         first = S$.car(sexp);
         assert first.equals("*list");
+
+        sexp = "(\"Shop\\\"ping\" \"Run \\\" ning\" \"Football\")";
+        first = S$.car(sexp);
+        System.out.println(first);
+        assert first.equals("\"Shop\\\"ping\"");
     }
 
     @Test
@@ -67,5 +72,10 @@ public class CarCdrTest {
         left = S$.cdr(sexp);
         assert left.equals("(\"DavidChen\")");
 
+        sexp = "(*list \"Shop\\\"ping\" \"Run \\\" ning\" \"Football\")";
+        left = S$.cdr(sexp);
+        assert left.equals("(\"Shop\\\"ping\" \"Run \\\" ning\" \"Football\")");
+        left = S$.cdr(left);
+        assert left.equals("(\"Run \\\" ning\" \"Football\")");
     }
 }

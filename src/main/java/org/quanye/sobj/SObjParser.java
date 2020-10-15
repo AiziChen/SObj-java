@@ -1,7 +1,7 @@
 package org.quanye.sobj;
 
 import org.quanye.sobj.annotation.DateFormat;
-import org.quanye.sobj.exception.InValidSObjSyntaxException;
+import org.quanye.sobj.exception.InvalidSObjSyntaxException;
 import org.quanye.sobj.struct.SObjNode;
 import org.quanye.sobj.tools.C$;
 import org.quanye.sobj.tools.S$;
@@ -114,12 +114,12 @@ public class SObjParser {
      * @param instance Override instance
      * @param <T>      instance type
      * @return overrode instance
-     * @throws InValidSObjSyntaxException Throws the exception while the SObj syntax is non-valid
+     * @throws InvalidSObjSyntaxException Throws the exception while the SObj syntax is non-valid
      */
-    public static <T> T toObject(String sObj, T instance) throws InValidSObjSyntaxException {
+    public static <T> T toObject(String sObj, T instance) throws InvalidSObjSyntaxException {
         sObj = S$.removeBoilerplateEmptyCode(sObj);
         if (!S$.isValidSexp(sObj)) {
-            throw new InValidSObjSyntaxException("Invalid SObj syntax");
+            throw new InvalidSObjSyntaxException("Invalid SObj syntax");
         }
         SObjNode lo = new SObjNode(sObj);
         Class<?> clazz = instance.getClass();
@@ -138,12 +138,12 @@ public class SObjParser {
      * @param clazz Resulting object's type
      * @param <T>   Object's generic type
      * @return Object
-     * @throws InValidSObjSyntaxException Throws the exception while the SObj syntax is non-valid
+     * @throws InvalidSObjSyntaxException Throws the exception while the SObj syntax is non-valid
      */
-    public static <T> T toObject(String sObj, Class<T> clazz) throws InValidSObjSyntaxException {
+    public static <T> T toObject(String sObj, Class<T> clazz) throws InvalidSObjSyntaxException {
         sObj = S$.removeBoilerplateEmptyCode(sObj);
         if (!S$.isValidSexp(sObj)) {
-            throw new InValidSObjSyntaxException("Invalid SObj syntax");
+            throw new InvalidSObjSyntaxException("Invalid SObj syntax");
         }
         SObjNode lo = new SObjNode(sObj);
         if (clazz.isArray()) {

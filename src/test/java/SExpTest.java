@@ -12,6 +12,15 @@ public class SExpTest {
         String s = "(  a  (  b    c  )  )";
         s = removeBoilerplateEmptyCode(s);
         assert s.equals("(a(b c))");
+
+        s = "(  a  (  b    \"abc\"  )  )";
+        s = removeBoilerplateEmptyCode(s);
+        assert s.equals("(a(b \"abc\"))");
+
+        s = "(  a  (  b    \"1 \"abc\" 1\"  )  )";
+        s = removeBoilerplateEmptyCode(s);
+        assert s.equals("(a(b \"1 \"abc\" 1\"))");
+
         // example 2: complex and contains comments
         String s2 = "(sobj  ;; listen port\n" +
                 "    (listenPort 7878)\r\n" +
@@ -28,7 +37,7 @@ public class SExpTest {
 
     @Test
     public void isValidSexpTest() {
-        String s = "(  a  (  b    c  )  )";
+        String s = "(  a  (  b    c  'd   \" E F \" 'G  )  )";
         assert isValidSexp(s);
 
         s = "(obj (a b )";
@@ -53,6 +62,9 @@ public class SExpTest {
         assert S$.length(sexp) == 4;
 
         sexp = "((((a b)) c) d e)";
+        assert S$.length(sexp) == 3;
+
+        sexp = "((((a b)) c) \"d\" 'e)";
         assert S$.length(sexp) == 3;
 
         sexp = "()";

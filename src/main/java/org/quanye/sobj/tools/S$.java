@@ -22,13 +22,13 @@ public class S$ {
          *   (name "David")
          *   (age 26))
          */
-        String regex = String.format("(%c)(.*)(\n)", COMMENT_C);
+        String regex = COMMENT_C + "(.*)(\\R)";
         sexp = sexp.replaceAll(regex, "");
 
         // example: (  a  (  b  c  )  ) -> (a(b  c))
-        regex = String.format("(\\s*)(\\%c)(\\s*)", BRACKET_START_C);
+        regex = "(\\s*)(\\" + BRACKET_START_C + ")(\\s*)";
         sexp = sexp.replaceAll(regex, BRACKET_START);
-        regex = String.format("(\\s*)(\\%c)(\\s*)", BRACKET_CLOSE_C);
+        regex = "(\\s*)(\\" + BRACKET_CLOSE_C + ")(\\s*)";
         sexp = sexp.replaceAll(regex, BRACKET_CLOSE);
 
         // example: (a(b   c)) -> (a(b c))
@@ -38,16 +38,16 @@ public class S$ {
     }
 
     public static String minimizeSexp(String sObj) {
-        // example: (name "DavidChen") -> (name"DavidChen")
-        String regex = String.format("(\\s)(\\%c)", '\"');
+        // example: (name "David \\\"Chen") -> (name"David \\\"Chen")
+        String regex = "(\\s)(\")";
         sObj = sObj.replaceAll(regex, "\"");
 
         // example: (name 'DavidChen) -> (name'DavidChen)
-        regex = String.format("(\\s)(\\%c)", '\'');
+        regex = "(\\s)(')";
         sObj = sObj.replaceAll(regex, "'");
 
         // example: (*obj (name"DavidChen")) -> (*obj(name"DavidChen"))
-        regex = String.format("(\\s)(\\%c)", BRACKET_START_C);
+        regex = "(\\s)(\\" + BRACKET_START_C + ")";
         sObj = sObj.replaceAll(regex, BRACKET_START);
 
         return sObj;
@@ -93,10 +93,11 @@ public class S$ {
 
     public static String car(String sexp) {
         int i = 1;
+        int sLen = sexp.length();
         if (sexp.charAt(1) == BRACKET_START_C) {
             int bStart = 0;
             int bClose = 0;
-            for (; i < sexp.length(); ++i) {
+            for (; i < sLen; ++i) {
                 char c = sexp.charAt(i);
                 if (c == BRACKET_START_C) {
                     bStart++;
@@ -109,9 +110,13 @@ public class S$ {
                 }
             }
         } else if (sexp.charAt(1) == '\"') {
-            for (i = 2; i < sexp.length(); ++i) {
+            for (i = 2; i < sLen; ++i) {
                 char c = sexp.charAt(i);
-                if (c == '\"') {
+                if (c == '\\') {
+                    if ((i + 1) < sLen && sexp.charAt(i + 1) == '\"') {
+                        i++;
+                    }
+                } else if (c == '\"'){
                     i++;
                     break;
                 }

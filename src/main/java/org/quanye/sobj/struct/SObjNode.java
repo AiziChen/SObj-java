@@ -1,7 +1,7 @@
 package org.quanye.sobj.struct;
 
 import org.quanye.sobj.SObjParser;
-import org.quanye.sobj.exception.InValidSObjSyntaxException;
+import org.quanye.sobj.exception.InvalidSObjSyntaxException;
 import org.quanye.sobj.tools.C$;
 import org.quanye.sobj.tools.S$;
 
@@ -40,7 +40,7 @@ public class SObjNode {
         if (S$.isPair(keysValue)) {
             try {
                 return SObjParser.toObject(keysValue, clazz);
-            } catch (InValidSObjSyntaxException e) {
+            } catch (InvalidSObjSyntaxException e) {
                 e.printStackTrace();
                 return null;
             }
