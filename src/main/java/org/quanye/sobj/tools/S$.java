@@ -37,20 +37,21 @@ public class S$ {
         return sexp;
     }
 
-    public static String minimizeSexp(String sObj) {
+    public static String minimizeSexp(String sexp) {
+        sexp = removeBoilerplateEmptyCode(sexp);
         // example: (name "David \\\"Chen") -> (name"David \\\"Chen")
         String regex = "(\\s)(\")";
-        sObj = sObj.replaceAll(regex, "\"");
+        sexp = sexp.replaceAll(regex, "\"");
 
         // example: (name 'DavidChen) -> (name'DavidChen)
         regex = "(\\s)(')";
-        sObj = sObj.replaceAll(regex, "'");
+        sexp = sexp.replaceAll(regex, "'");
 
         // example: (*obj (name"DavidChen")) -> (*obj(name"DavidChen"))
         regex = "(\\s)(\\" + BRACKET_START_C + ")";
-        sObj = sObj.replaceAll(regex, BRACKET_START);
+        sexp = sexp.replaceAll(regex, BRACKET_START);
 
-        return sObj;
+        return sexp;
     }
 
     public static boolean isValidSexp(String sexp) {
