@@ -143,6 +143,6 @@ User userDefinedU1 = SObjParser.toObject(userDefinedSObj, defaultU1);
 > 5.Parse SObj to JSON
 ```java
 User u1 = new User(yyy, yyy, ....);
-String u1SObj = SObjParser.fromObject(BaseTest.getU1());
+String u1SObj = SObjParser.fromObject(u1);
 String u1JSON = STool.toJSON(u1SObj);
 ```
