@@ -150,4 +150,60 @@ public class S$ {
             return 1 + length(S$.cdr(sObj));
         }
     }
+
+    private static String first(String sexp) {
+        return car(sexp);
+    }
+
+    private static String second(String sexp) {
+        return car(cdr(sexp));
+    }
+
+
+    public static String toArrayJSON(String sObj) {
+        String ele = car(sObj);
+        if (S$.isPair(ele)) {
+            if (!isNull(cdr(sObj))) {
+                return toJSON(ele) + "," + toArrayJSON(cdr(sObj));
+            } else {
+                return toJSON(ele);
+            }
+        } else if (isNull(cdr(sObj))) {
+            return C$.trimSObjBoolToNormalBool(ele);
+        } else {
+            return ele + "," + toArrayJSON(cdr(sObj));
+        }
+    }
+
+    public static String toJSON(String sObj) {
+        String ele = car(sObj);
+        if (ele.equals(OBJECT_NAME)) {
+            return "{" + toJSON(cdr(sObj)) + "}";
+        } else if (ele.equals(LIST_NAME)) {
+            return "[" + toArrayJSON(cdr(sObj)) + "]";
+        } else if (isPair(ele)) {
+            String firValue = first(ele);
+            String secValue = second(ele);
+            if (!isPair(secValue)) {
+                if (!isNull(cdr(sObj))) {
+                    return "\"" + firValue + "\":" + secValue + "," + toJSON(cdr(sObj));
+                } else {
+                    return "\"" + firValue + "\":" + C$.trimSObjBoolToNormalBool(secValue);
+                }
+            } else {
+                if (!isNull(cdr(sObj))) {
+                    return "\"" + firValue + "\":" + toJSON(secValue) + "," + toJSON(cdr(sObj));
+                } else {
+                    return "\"" + firValue + "\":" + toJSON(secValue);
+                }
+            }
+        } else {
+            // Is atom
+            if (!isNull(cdr(sObj))) {
+                return C$.trimSObjBoolToNormalBool(ele);
+            } else {
+                return "null";
+            }
+        }
+    }
 }

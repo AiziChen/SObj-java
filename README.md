@@ -13,7 +13,8 @@ https://github.com/AiziChen/SObj-typescript.git
   (name "DavidChen")
   (age 25)
   (birth "2019-01-16 01:08,30")
-  (glasses ((id 1)
+  (glasses (*obj
+    (id 1)
     (degree 203.3)
     (color "RED-BLACK")))
   (height 167.3)
@@ -135,7 +136,13 @@ String minimizeU1SObj = SObjParser.minimize(u1SObj);
 ```
 > 4.SObj Override
 ```java
-User defaultU1 = new User(yyy, zzz, xxx, );
+User defaultU1 = new User(yyy, zzz, xxx, ....);
 String userDefinedSObj = "(*obj(id 2)(uid 0)(name \"Quanyec\")(age 26)(birth \"1995-09-24 09:50,07\")(glasses (*obj(price 115.5)(id 1)(degree 103.3)(color \"YELLOW-PURPLE\")))(height 167.3))";
 User userDefinedU1 = SObjParser.toObject(userDefinedSObj, defaultU1);
+```
+> 5.Parse SObj to JSON
+```java
+User u1 = new User(yyy, yyy, ....);
+String u1SObj = SObjParser.fromObject(BaseTest.getU1());
+String u1JSON = STool.toJSON(u1SObj);
 ```

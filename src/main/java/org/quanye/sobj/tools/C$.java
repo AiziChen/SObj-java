@@ -83,4 +83,29 @@ public class C$ {
         return null;
     }
 
+    public static boolean isPair(String sexp) {
+        return S$.length(sexp) == 2;
+    }
+
+    public static String trimNormalBoolToSObjBool(String value) {
+        if (value.equals("true")) {
+            return "#t";
+        } else if (value.equals("false")){
+            return "#f";
+        } else {
+            return value;
+        }
+    }
+
+    public static String trimSObjBoolToNormalBool(String value) {
+        if (value.equals("#t")) {
+            return "true";
+        } else if (value.equals("#f")){
+            return "false";
+        } else {
+            return value;
+        }
+    }
+
+
 }

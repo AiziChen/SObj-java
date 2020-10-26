@@ -18,4 +18,10 @@ deserialize performance improved
 * `class name` changed:
 change `InValidSyntaxException` to `InvalidSyntaxExeption`
 
+## 2020-10-26
+* Add `STool` class and the `toJSON` function
+* Move `minimize` function from the `SObjParser` class into the `STool` class
+* Add the `nullValueTest` test
+* Update `README.md` file: add `toJSON` usage
+
 ## later

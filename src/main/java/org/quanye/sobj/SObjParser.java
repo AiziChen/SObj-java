@@ -305,8 +305,4 @@ public class SObjParser {
         return new SObjNode(sObj);
     }
 
-
-    public static String minimize(String sObj) {
-        return S$.minimizeSexp(sObj);
-    }
 }

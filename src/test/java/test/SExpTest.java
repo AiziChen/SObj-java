@@ -1,3 +1,5 @@
+package test;
+
 import org.junit.Test;
 import org.quanye.sobj.tools.S$;
 

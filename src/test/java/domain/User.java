@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.domain;
+package domain;
 
 import org.quanye.sobj.annotation.DateFormat;
 
@@ -25,11 +25,12 @@ public class User {
     private Double height;
     private Goods[] goods;
     private String[] behaviors;
+    private Null nill;
 
     public User() {
     }
 
-    public User(Integer id, String name, Integer age, Date birth, Glasses glasses, Double height, Goods[] goods, String[] behaviors) {
+    public User(Integer id, String name, Integer age, Date birth, Glasses glasses, Double height, Goods[] goods, String[] behaviors, Null nill) {
         this.id = id;
         this.name = name;
         this.age = age;
@@ -38,6 +39,7 @@ public class User {
         this.height = height;
         this.goods = goods;
         this.behaviors = behaviors;
+        this.nill = nill;
     }
 
     public Integer getId() {
@@ -104,6 +106,14 @@ public class User {
         this.behaviors = behaviors;
     }
 
+    public Null getNill() {
+        return nill;
+    }
+
+    public void setNill(Null nill) {
+        this.nill = nill;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -115,6 +125,7 @@ public class User {
                 ", height=" + height +
                 ", goods=" + Arrays.toString(goods) +
                 ", behaviors=" + Arrays.toString(behaviors) +
+                ", nill=" + nill +
                 '}';
     }
 }
