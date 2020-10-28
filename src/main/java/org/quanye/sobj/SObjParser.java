@@ -256,11 +256,7 @@ public class SObjParser {
             Class<?> typeClazz = field.getType();
             if (C$.isPrimitive(typeClazz)) {
                 // Change `TURE_VALUE` and `FALSE_VALUE` to `true` and `false`
-                if (value.equals(TRUE_VALUE)) {
-                    value = "true";
-                } else if (value.equals(FALSE_VALUE)) {
-                    value = "false";
-                }
+                value = C$.trimSObjBoolToNormalBool(value);
                 try {
                     Constructor<?> c = typeClazz.getConstructor(String.class);
                     field.set(target, c.newInstance(value));
