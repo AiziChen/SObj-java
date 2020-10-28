@@ -25,7 +25,7 @@ public class SObjNode {
         while (true) {
             SObjNode pair = node.getCar();
             if (pair.getCar().nodeValue.equals(key)) {
-                return pair;
+                return pair.getCdr().getCar();
             } else {
                 node = node.getCdr();
                 if (node == null) {
@@ -36,7 +36,7 @@ public class SObjNode {
     }
 
     public <T> T getValue(Class<T> clazz) {
-        String keysValue = S$.car(S$.cdr(nodeValue));
+        String keysValue = nodeValue;
         if (S$.isPair(keysValue)) {
             try {
                 return SObjParser.toObject(keysValue, clazz);
@@ -96,4 +96,18 @@ public class SObjNode {
         return S$.isList(nodeValue);
     }
 
+    public SObjNode listIndex(int index) {
+        assert index >= 0;
+        return listIndex(getCdr(), index);
+    }
+
+    private SObjNode listIndex(SObjNode node, int index) {
+        if (node == null) {
+            return null;
+        } else if (index <= 0) {
+            return node.getCar();
+        } else {
+            return listIndex(node.getCdr(), index - 1);
+        }
+    }
 }

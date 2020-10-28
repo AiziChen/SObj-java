@@ -90,7 +90,7 @@ public class C$ {
     public static String trimNormalBoolToSObjBool(String value) {
         if (value.equals("true")) {
             return "#t";
-        } else if (value.equals("false")){
+        } else if (value.equals("false")) {
             return "#f";
         } else {
             return value;
@@ -100,7 +100,7 @@ public class C$ {
     public static String trimSObjBoolToNormalBool(String value) {
         if (value.equals("#t")) {
             return "true";
-        } else if (value.equals("#f")){
+        } else if (value.equals("#f")) {
             return "false";
         } else {
             return value;

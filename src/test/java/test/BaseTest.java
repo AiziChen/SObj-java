@@ -1,25 +1,25 @@
 package test;
 
+import domain.Glasses;
+import domain.Goods;
+import domain.User;
 import org.junit.Test;
 import org.quanye.sobj.SObjParser;
 import org.quanye.sobj.exception.InvalidSObjSyntaxException;
 import org.quanye.sobj.struct.SObjNode;
-import domain.Glasses;
-import domain.Goods;
-import domain.User;
 
 import java.util.Arrays;
 import java.util.Date;
 
 public class BaseTest {
     private final static Glasses glasses = new Glasses(1, 203.3, "RED \\\"And\\\" BLACK");
-    private final static Goods[] goodss = {
+    private final static Goods[] goods = {
             new Goods("火龙果", 2.3F, false),
             new Goods("雪梨", 3.2F, false),
             new Goods("西红柿", 2.5F, true)
     };
     private final static String[] behaviors = new String[]{"Shopping", "Running", "Football"};
-    private final static User u1 = new User(1, "DavidChen", 25, new Date(814233600000L), glasses, 167.3, goodss, behaviors, null);
+    private final static User u1 = new User(1, "DavidChen", 25, new Date(814233600000L), glasses, 167.3, goods, behaviors, null);
 
     public static User getU1() {
         return u1;
@@ -32,7 +32,7 @@ public class BaseTest {
         System.out.println("=====serialize Object Test Result=====\n" + u1SObj);
 
         // Parse to List Object
-        String goods = SObjParser.fromObject(goodss);
+        String goods = SObjParser.fromObject(BaseTest.goods);
         System.out.println("=====serialize Array-Object Test Result=====\n" + goods);
     }
 
@@ -56,7 +56,7 @@ public class BaseTest {
         System.out.println("=====deserialize to Object result=====\n"
                 + "u1 = " + result);
 
-        String goodsSobj = SObjParser.fromObject(goodss);
+        String goodsSobj = SObjParser.fromObject(goods);
         Goods[] goods = SObjParser.toObject(goodsSobj, Goods[].class);
         System.out.println("=====deserialize to Array-Object result=====\n" + Arrays.toString(goods));
     }
@@ -90,17 +90,39 @@ public class BaseTest {
     public void getSObjNodeTest() {
         String u1SObj = SObjParser.fromObject(u1);
         SObjNode node = SObjParser.getRootNode(u1SObj);
+
+        Integer id = node.getNode("id").getValue(Integer.class);
+        assert id.equals(u1.getId());
         String name = node.getNode("name").getValue(String.class);
         assert name.equals(u1.getName());
+
         Double glassDegree = node.getNode("glasses").getValue(Glasses.class).getDegree();
-        assert glassDegree.equals(u1.getGlasses().getDegree());
+        assert glassDegree.toString().equals(u1.getGlasses().getDegree().toString());
+
+        SObjNode n = node.getNode("goods");
+        assert n.listIndex(0).getValue(Goods.class).toString()
+                .equals(u1.getGoods()[0].toString());
+        assert n.listIndex(1).getValue(Goods.class).toString()
+                .equals(u1.getGoods()[1].toString());
+        assert n.listIndex(2).getValue(Goods.class).toString()
+                .equals(u1.getGoods()[2].toString());
+        assert n.listIndex(3) == null;
+
+        n = node.getNode("behaviors");
+        assert n.listIndex(0).getValue(String.class)
+                .equals(u1.getBehaviors()[0]);
+        assert n.listIndex(1).getValue(String.class)
+                .equals(u1.getBehaviors()[1]);
+        assert n.listIndex(2).getValue(String.class)
+                .equals(u1.getBehaviors()[2]);
+        assert n.listIndex(3) == null;
     }
 
 
     @Test
-    public void toObjectOverrideTest() throws InvalidSObjSyntaxException {
+    public void toObjectOverrideTest() throws InvalidSObjSyntaxException, CloneNotSupportedException {
         String userDefinedSObj = "(*obj(id 2)(uid 0)(name \"Quanyec\")(age 26)(birth \"1995-10-21 08:00,00\")(glasses (*obj(price 115.5)(id 1)(degree 103.3)(color \"YELLOW-PURPLE\")))(height 167.3))";
-        User defaultU1 = u1;
+        User defaultU1 = u1.clone();
         User userDefinedU1 = SObjParser.toObject(userDefinedSObj, defaultU1);
         System.out.println("=====toObject Override Test Result=====\n" + userDefinedU1);
     }
