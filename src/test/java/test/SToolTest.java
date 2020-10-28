@@ -31,5 +31,6 @@ public class SToolTest {
         String u1SObj = SObjParser.fromObject(u1);
         String beautifySObj = STool.beautify(u1SObj);
         assert u1.toString().equals(SObjParser.toObject(beautifySObj, User.class).toString());
+        System.out.println("=====beautify test result=====\n" + beautifySObj);
     }
 }
