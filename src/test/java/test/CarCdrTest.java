@@ -1,6 +1,7 @@
 package test;
 
 import org.junit.Test;
+import org.quanye.sobj.SObjParser;
 import org.quanye.sobj.tools.S$;
 
 public class CarCdrTest {
@@ -61,6 +62,10 @@ public class CarCdrTest {
         sexp = "('e)";
         first = S$.car(sexp);
         assert first.equals("'e");
+
+        sexp = "()";
+        first = S$.car(sexp);
+        assert first.isEmpty();
     }
 
     @Test
@@ -86,5 +91,13 @@ public class CarCdrTest {
         assert left.equals("(\"Shop\\\"ping\" \"Run \\\" ning\" \"Football\")");
         left = S$.cdr(left);
         assert left.equals("(\"Run \\\" ning\" \"Football\")");
+
+        sexp = "()";
+        left = S$.cdr(sexp);
+        assert left.equals(SObjParser.NULL);
+
+        sexp = "(a)";
+        left = S$.cdr(sexp);
+        assert left.equals(SObjParser.NULL);
     }
 }

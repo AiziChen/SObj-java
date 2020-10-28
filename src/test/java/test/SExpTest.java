@@ -81,4 +81,22 @@ public class SExpTest {
         sexp = "((()()()))";
         assert S$.length(sexp) == 1;
     }
+
+    @Test
+    public void deepTest() {
+        String sexp = "(a b c)";
+        assert S$.deep(sexp) == 1;
+
+        sexp = "((a b) c d e)";
+        assert S$.deep(sexp) == 2;
+
+        sexp = "((((a b)) c) d e)";
+        assert S$.deep(sexp) == 4;
+
+        sexp = "(((q y) (g j) ((a b)) c) d e)";
+        assert S$.deep(sexp) == 4;
+
+        sexp = "(((q y) (g (q (+ 1 2)) j) ((a b)) c) d e)";
+        assert S$.deep(sexp) == 5;
+    }
 }

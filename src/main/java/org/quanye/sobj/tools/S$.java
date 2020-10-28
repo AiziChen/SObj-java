@@ -144,10 +144,18 @@ public class S$ {
     }
 
     public static long length(String sObj) {
-        if (S$.isNull(sObj)) {
+        if (isNull(sObj)) {
             return 0;
         } else {
-            return 1 + length(S$.cdr(sObj));
+            return 1 + length(cdr(sObj));
+        }
+    }
+
+    public static long deep(String sObj) {
+        if (!isList(sObj) || isNull(sObj) || sObj.isEmpty()) {
+            return 0;
+        } else {
+            return Long.max(1 + deep(car(sObj)), deep(cdr(sObj)));
         }
     }
 
@@ -162,7 +170,7 @@ public class S$ {
 
     public static String toArrayJSON(String sObj) {
         String ele = car(sObj);
-        if (S$.isPair(ele)) {
+        if (isPair(ele)) {
             if (!isNull(cdr(sObj))) {
                 return toJSON(ele) + "," + toArrayJSON(cdr(sObj));
             } else {
