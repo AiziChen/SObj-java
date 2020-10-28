@@ -27,5 +27,7 @@ change `InValidSyntaxException` to `InvalidSyntaxExeption`
 ## 2020-10-28
 * Code structured
 * Add `listIndex` function to SObjNode functionality
+* Add `deep` function, and it's test
+* Add `beautify` function for SObj
 
 ## later

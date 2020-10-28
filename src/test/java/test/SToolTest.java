@@ -24,4 +24,12 @@ public class SToolTest {
         User tmpU1 = SObjParser.toObject(minimizeU1SObj, User.class);
         assert u1.toString().equals(tmpU1.toString());
     }
+
+    @Test
+    public void beautifyTest() throws InvalidSObjSyntaxException {
+        User u1 = BaseTest.getU1();
+        String u1SObj = SObjParser.fromObject(u1);
+        String beautifySObj = STool.beautify(u1SObj);
+        assert u1.toString().equals(SObjParser.toObject(beautifySObj, User.class).toString());
+    }
 }

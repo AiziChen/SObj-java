@@ -139,22 +139,29 @@ Goods firstGood = goodsNode.listIndex(2).getGoods(Goods.class);
 // out of index indexing will produce `null`:
 Goods nullGood = goodsNode.listIndex(112).getGoods(Goods.class);
 ```
-> 3.SObj Minimize
-```java
-User u1 = new User(xxx, yyy, ....);
-String u1SObj = SObjParser.fromObject(u1);
-String minimizeU1SObj = SObjParser.minimize(u1SObj);
-```
-> 4.SObj Override
+> 3.SObj Override
 ```java
 User defaultU1 = new User(yyy, zzz, xxx, ....);
 String userDefinedSObj = "(*obj(id 2)(uid 0)(name \"Quanyec\")(age 26)(birth \"1995-09-24 09:50,07\")(glasses (*obj(price 115.5)(id 1)(degree 103.3)(color \"YELLOW-PURPLE\")))(height 167.3))";
 User userDefinedU1 = SObjParser.toObject(userDefinedSObj, defaultU1);
 assert userDefinedU1.eqauls(defaultU1);  // userDefinedU1 and defaultU1 is the same instance 
 ```
-> 5.Parse SObj to JSON
+> 4.Parse SObj to JSON
 ```java
 User u1 = new User(yyy, yyy, ....);
 String u1SObj = SObjParser.fromObject(u1);
 String u1JSON = STool.toJSON(u1SObj);
+```
+> 5.SObj Minimize
+```java
+User u1 = new User(xxx, yyy, ....);
+String u1SObj = SObjParser.fromObject(u1);
+String minimizeU1SObj = SObjParser.minimize(u1SObj);
+```
+> 6.SObj Beautify
+```java
+User u1 = new User(xxx, yyy, ....);
+String u1SObj = SObjParser.fromObject(u1);
+String beautifySObj = STool.beautify(u1SObj);
+assert u1.toString().equals(SObjParser.toObject(beautifySObj, User.class).toString());
 ```

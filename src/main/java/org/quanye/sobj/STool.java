@@ -26,4 +26,8 @@ public class STool {
     public static String minimize(String sObj) {
         return S$.minimizeSexp(sObj);
     }
+
+    public static String beautify(String sObj) {
+        return S$.beautify(sObj);
+    }
 }

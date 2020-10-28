@@ -167,6 +167,10 @@ public class S$ {
         return car(cdr(sexp));
     }
 
+    private static String third(String sexp) {
+        return car(cdr(cdr(sexp)));
+    }
+
 
     public static String toArrayJSON(String sObj) {
         String ele = car(sObj);
@@ -213,5 +217,53 @@ public class S$ {
                 return "null";
             }
         }
+    }
+
+    private static String beautifyList(String sObj, int spaces) {
+        StringBuilder rc = new StringBuilder();
+        StringBuilder sc = new StringBuilder("\n");
+        for (int i = 0; i < spaces; ++i) {
+            sc.append("  ");
+        }
+        if (!isNull(sObj)) {
+            rc.append(beautify(car(sObj), spaces + 1));
+            if (!isNull(cdr(sObj))) {
+                rc.append(sc);
+            }
+            rc.append(beautifyList(cdr(sObj), spaces));
+        }
+        return rc.toString();
+    }
+
+    private static String beautify(String sObj, int spaces) {
+        StringBuilder rc = new StringBuilder();
+        StringBuilder sc = new StringBuilder("\n");
+        for (int i = 0; i < spaces; ++i) {
+            sc.append("  ");
+        }
+        if (!isList(sObj)) {
+            rc.append(sObj);
+        } else if (C$.isSObj(sObj)) {
+            rc.append(BRACKET_START_C)
+                    .append(first(sObj))
+                    .append(beautify(cdr(sObj), spaces))
+                    .append(BRACKET_CLOSE_C);
+        } else if (C$.isList(sObj)) {
+            rc.append(BRACKET_START_C)
+                    .append(first(sObj))
+                    .append(sc)
+                    .append(beautifyList(cdr(sObj), spaces))
+                    .append(BRACKET_CLOSE_C);
+        } else if (!isNull(sObj)) {
+            rc.append(sc).append(BRACKET_START_C).append(first(first(sObj))).append(SEPARATOR_C)
+                    .append(beautify(second(first(sObj)), spaces + 1))
+                    .append(BRACKET_CLOSE_C)
+                    .append(beautify(cdr(sObj), spaces));
+        }
+        return rc.toString();
+    }
+
+    public static String beautify(String sObj) {
+        return beautify(sObj, 1);
     }
 }
