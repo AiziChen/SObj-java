@@ -9,7 +9,7 @@ https://github.com/AiziChen/SObj-typescript.git
 > SObj
 ```scheme
 (*obj
-  (id 1)
+  (id 1)  ;; user-id
   (name "DavidChen")
   (age 25)
   (birth "2019-01-16 01:08,30")
@@ -18,6 +18,7 @@ https://github.com/AiziChen/SObj-typescript.git
     (degree 203.3)
     (color "RED-BLACK")))
   (height 167.3)
+  ;; goods list/array
   (goods (*list
     (*obj (name "火龙果") (price 2.3))
     (*obj (name "雪梨") (price 3.2))))
