@@ -127,6 +127,16 @@ if (glassesNode != null) {
     // then, use can use this glasses Object below
     System.out.println(glasses.getDegree());
 }
+// sampel 3: index the Goods array
+SObjNode goodsNode = rootNode.getNode("goods");
+// index first value of the `goods`:
+Goods firstGood = goodsNode.listIndex(0).getGoods(Goods.class);
+// index second value of the `goods`:
+Goods firstGood = goodsNode.listIndex(1).getGoods(Goods.class);
+// index third value of the `goods`:
+Goods firstGood = goodsNode.listIndex(2).getGoods(Goods.class);
+// out of index indexing will produce `null`:
+Goods nullGood = goodsNode.listIndex(112).getGoods(Goods.class);
 ```
 > 3.SObj Minimize
 ```java
@@ -139,6 +149,7 @@ String minimizeU1SObj = SObjParser.minimize(u1SObj);
 User defaultU1 = new User(yyy, zzz, xxx, ....);
 String userDefinedSObj = "(*obj(id 2)(uid 0)(name \"Quanyec\")(age 26)(birth \"1995-09-24 09:50,07\")(glasses (*obj(price 115.5)(id 1)(degree 103.3)(color \"YELLOW-PURPLE\")))(height 167.3))";
 User userDefinedU1 = SObjParser.toObject(userDefinedSObj, defaultU1);
+assert userDefinedU1.eqauls(defaultU1);  // userDefinedU1 and defaultU1 is the same instance 
 ```
 > 5.Parse SObj to JSON
 ```java

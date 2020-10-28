@@ -24,4 +24,8 @@ change `InValidSyntaxException` to `InvalidSyntaxExeption`
 * Add the `nullValueTest` test
 * Update `README.md` file: add `toJSON` usage
 
+## 2020-10-28
+* Code structured
+* Add `listIndex` function to SObjNode functionality
+
 ## later
