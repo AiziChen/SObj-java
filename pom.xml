@@ -7,6 +7,10 @@
     <groupId>org.quanye.sobj</groupId>
     <artifactId>SObj-java</artifactId>
     <version>1.06</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+    </properties>
     <build>
         <plugins>
             <plugin>
