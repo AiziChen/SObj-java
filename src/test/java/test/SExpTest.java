@@ -3,7 +3,7 @@ package test;
 import org.junit.Test;
 import org.quanye.sobj.tools.S$;
 
-import static org.quanye.sobj.tools.S$.isValidSexp;
+import static org.quanye.sobj.tools.S$.validSexp;
 import static org.quanye.sobj.tools.S$.removeBoilerplateEmptyCode;
 
 public class SExpTest {
@@ -40,19 +40,19 @@ public class SExpTest {
     @Test
     public void isValidSexpTest() {
         String s = "(  a  (  b    c  'd   \" E F \" 'G  )  )";
-        assert isValidSexp(s);
+        assert validSexp(s);
 
         s = "(obj (a b )";
-        assert !isValidSexp(s);
+        assert !validSexp(s);
 
         s = "(obj (a b )))";
-        assert !isValidSexp(s);
+        assert !validSexp(s);
 
         s = "(()) ()";
-        assert !isValidSexp(s);
+        assert !validSexp(s);
 
         s = ")))(((";
-        assert !isValidSexp(s);
+        assert !validSexp(s);
     }
 
     @Test

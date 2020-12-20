@@ -6,7 +6,6 @@ import domain.User;
 import org.junit.Test;
 import org.quanye.sobj.SObjParser;
 import org.quanye.sobj.exception.InvalidSObjSyntaxException;
-import org.quanye.sobj.struct.SObjNode;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -83,39 +82,6 @@ public class BaseTest {
 
         String u1SObj = SObjParser.fromObject(lessVariableUser);
         System.out.println("=====less variable serialize test result=====\n" + u1SObj);
-    }
-
-
-    @Test
-    public void getSObjNodeTest() {
-        String u1SObj = SObjParser.fromObject(u1);
-        SObjNode node = SObjParser.getRootNode(u1SObj);
-
-        Integer id = node.getNode("id").getValue(Integer.class);
-        assert id.equals(u1.getId());
-        String name = node.getNode("name").getValue(String.class);
-        assert name.equals(u1.getName());
-
-        Double glassDegree = node.getNode("glasses").getValue(Glasses.class).getDegree();
-        assert glassDegree.toString().equals(u1.getGlasses().getDegree().toString());
-
-        SObjNode n = node.getNode("goods");
-        assert n.listIndex(0).getValue(Goods.class).toString()
-                .equals(u1.getGoods()[0].toString());
-        assert n.listIndex(1).getValue(Goods.class).toString()
-                .equals(u1.getGoods()[1].toString());
-        assert n.listIndex(2).getValue(Goods.class).toString()
-                .equals(u1.getGoods()[2].toString());
-        assert n.listIndex(3) == null;
-
-        n = node.getNode("behaviors");
-        assert n.listIndex(0).getValue(String.class)
-                .equals(u1.getBehaviors()[0]);
-        assert n.listIndex(1).getValue(String.class)
-                .equals(u1.getBehaviors()[1]);
-        assert n.listIndex(2).getValue(String.class)
-                .equals(u1.getBehaviors()[2]);
-        assert n.listIndex(3) == null;
     }
 
 

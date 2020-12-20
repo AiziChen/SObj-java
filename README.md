@@ -131,13 +131,13 @@ if (glassesNode != null) {
 // sampel 3: index the Goods array
 SObjNode goodsNode = rootNode.getNode("goods");
 // index first value of the `goods`:
-Goods firstGood = goodsNode.listIndex(0).getValue(Goods.class);
+Goods firstGood = goodsNode.getValue(0, Goods.class);
 // index second value of the `goods`:
-Goods secondGood = goodsNode.listIndex(1).getValue(Goods.class);
+Goods secondGood = goodsNode.getValue(1, Goods.class);
 // index third value of the `goods`:
-Goods thirdGood = goodsNode.listIndex(2).getValue(Goods.class);
+Goods thirdGood = goodsNode.getValue(2, Goods.class);
 // out of index indexing will produce `null`:
-Goods nullGood = goodsNode.listIndex(112);//.getGoods(Goods.class);
+Goods nullGood = goodsNode.getValue(112, Goods.class);//.getGoods(Goods.class);
 ```
 > 3.SObj Override
 ```java

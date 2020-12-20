@@ -107,5 +107,34 @@ public class C$ {
         }
     }
 
+    public static Object toTypeValue(String value) {
+        if (value.length() > 1) {
+            char c1 = value.charAt(0);
+            if (c1 == '\"') {
+                return value.substring(1, value.length() - 1);
+            } else if (c1 >= '0' && c1 <= '9') {
+                if (value.contains(".")) {
+                    return Double.valueOf(value);
+                } else {
+                    try {
+                        return Integer.valueOf(value);
+                    } catch (RuntimeException e) {
+                        return Long.valueOf(value);
+                    }
+                }
+            } else if (c1 == '.') {
+                return Double.valueOf(value);
+            } else if (c1 == '\'') {
+                return value.charAt(1);
+            } else if (value.equals("#f")) {
+                return false;
+            } else if (value.equals("#t")) {
+                return true;
+            } else {
+                return value;
+            }
+        }
+        return value;
+    }
 
 }

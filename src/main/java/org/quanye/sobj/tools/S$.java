@@ -1,5 +1,10 @@
 package org.quanye.sobj.tools;
 
+import org.quanye.sobj.datatype.SObjTable;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import static org.quanye.sobj.SObjParser.*;
 
 /**
@@ -54,7 +59,7 @@ public class S$ {
         return sexp;
     }
 
-    public static boolean isValidSexp(String sexp) {
+    public static boolean validSexp(String sexp) {
         int lb = 0;
         int rb = 0;
         int i = 0;
@@ -171,6 +176,51 @@ public class S$ {
         return car(cdr(cdr(sexp)));
     }
 
+    public static SObjTable<Object, Object> toArraySObjTable(SObjTable<Object, Object> table, int index, String sObj) {
+        String ele = car(sObj);
+        if (isPair(ele)) {
+            if (!isNull(cdr(sObj))) {
+                table.put(index, toSObjTable(new SObjTable<>(), ele));
+                toArraySObjTable(table, index + 1, cdr(sObj));
+            } else {
+                toSObjTable(new SObjTable<>(), ele);
+            }
+        } else if (isNull(cdr(sObj))) {
+            table.put(index, C$.toTypeValue(ele));
+        } else {
+            table.put(index, C$.toTypeValue(ele));
+            toArraySObjTable(table, index + 1, cdr(sObj));
+        }
+        return table;
+    }
+
+    public static SObjTable<Object, Object> toSObjTable(SObjTable<Object, Object> table, String sObj) {
+        String ele = car(sObj);
+        if (ele.equals(OBJECT_NAME)) {
+            toSObjTable(table, cdr(sObj));
+        } else if (ele.equals(LIST_NAME)) {
+            toArraySObjTable(table, 0, cdr(sObj));
+        } else if (isPair(ele)) {
+            String firValue = first(ele);
+            String secValue = second(ele);
+            if (!isPair(secValue)) {
+                if (!isNull(cdr(sObj))) {
+                    table.put(firValue, C$.toTypeValue(secValue));
+                    toSObjTable(table, cdr(sObj));
+                } else {
+                    table.put(firValue, C$.toTypeValue(secValue));
+                }
+            } else {
+                if (!isNull(cdr(sObj))) {
+                    table.put(firValue, toSObjTable(new SObjTable<>(), secValue));
+                    toSObjTable(table, cdr(sObj));
+                } else {
+                    table.put(firValue, toSObjTable(new SObjTable<>(), secValue));
+                }
+            }
+        }
+        return table;
+    }
 
     public static String toArrayJSON(String sObj) {
         String ele = car(sObj);

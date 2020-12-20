@@ -1,8 +1,8 @@
 package org.quanye.sobj;
 
 import org.quanye.sobj.annotation.DateFormat;
+import org.quanye.sobj.datatype.SObjTable;
 import org.quanye.sobj.exception.InvalidSObjSyntaxException;
-import org.quanye.sobj.struct.SObjNode;
 import org.quanye.sobj.tools.C$;
 import org.quanye.sobj.tools.S$;
 
@@ -118,15 +118,15 @@ public class SObjParser {
      */
     public static <T> T toObject(String sObj, T instance) throws InvalidSObjSyntaxException {
         sObj = S$.removeBoilerplateEmptyCode(sObj);
-        if (!S$.isValidSexp(sObj)) {
+        if (!S$.validSexp(sObj)) {
             throw new InvalidSObjSyntaxException("Invalid SObj syntax");
         }
-        SObjNode lo = new SObjNode(sObj);
+        SObjTable<String, Object> lo = new SObjTable<>();
         Class<?> clazz = instance.getClass();
         if (clazz.isArray()) {
             throw new RuntimeException("Array override is not support.");
         } else {
-            return setValue(lo, instance);
+            return setValue(sObj, instance);
         }
     }
 
@@ -142,17 +142,16 @@ public class SObjParser {
      */
     public static <T> T toObject(String sObj, Class<T> clazz) throws InvalidSObjSyntaxException {
         sObj = S$.removeBoilerplateEmptyCode(sObj);
-        if (!S$.isValidSexp(sObj)) {
+        if (!S$.validSexp(sObj)) {
             throw new InvalidSObjSyntaxException("Invalid SObj syntax");
         }
-        SObjNode lo = new SObjNode(sObj);
         if (clazz.isArray()) {
             Class<?> compClazz = clazz.getComponentType();
             String pkgName = compClazz.getPackage().getName();
-            return setArrayValue(lo, pkgName, compClazz.getSimpleName());
+            return setArrayValue(sObj, pkgName, compClazz.getSimpleName());
         } else {
             try {
-                return setValue(lo, clazz.getDeclaredConstructor().newInstance());
+                return setValue(sObj, clazz.getDeclaredConstructor().newInstance());
             } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                 return null;
             }
@@ -160,16 +159,16 @@ public class SObjParser {
     }
 
 
-    private static <T> T setArrayValue(SObjNode sObjNode, String pkgName, String compClazzName) {
+    private static <T> T setArrayValue(String sObj, String pkgName, String compClazzName) {
         List<Object> list = new LinkedList<>();
-        SObjNode arrEleNode = sObjNode.getCdr();
-        if (C$.isSObj(arrEleNode.getCar().getNodeValue())) {
+        String arrEleNode = S$.cdr(sObj);
+        if (C$.isSObj(S$.car(arrEleNode))) {
             try {
                 Class<?> compClazz = Class.forName(pkgName + "." + compClazzName);
-                while (arrEleNode != null && arrEleNode.getCar() != null) {
-                    Object instance = setValue(arrEleNode.getCar(), compClazz.getDeclaredConstructor().newInstance());
+                while (S$.isPair(arrEleNode) && S$.isPair(S$.car(arrEleNode))) {
+                    Object instance = setValue(S$.car(arrEleNode), compClazz.getDeclaredConstructor().newInstance());
                     list.add(instance);
-                    arrEleNode = arrEleNode.getCdr();
+                    arrEleNode = S$.cdr(arrEleNode);
                 }
                 int lSize = list.size();
                 if (lSize > 0) {
@@ -183,15 +182,15 @@ public class SObjParser {
                 e.printStackTrace();
             }
         } else {
-            String carV = arrEleNode.getCar().getNodeValue();
-            while (arrEleNode != null) {
-                String v = arrEleNode.getCar().getNodeValue();
+            String carV = S$.car(arrEleNode);
+            while (S$.isPair(arrEleNode)) {
+                String v = S$.car(arrEleNode);
                 v = C$.trimStr(v);
                 list.add(v);
-                arrEleNode = arrEleNode.getCdr();
+                arrEleNode = S$.cdr(arrEleNode);
             }
             int lSize = list.size();
-            if (carV != null && lSize > 0) {
+            if (!S$.isNull(carV) && lSize > 0) {
                 Object target = Array.newInstance(C$.getValueType(carV), lSize);
                 for (int i = 0; i < lSize; ++i) {
                     Array.set(target, i, list.get(i));
@@ -203,21 +202,20 @@ public class SObjParser {
     }
 
 
-    private static <T> T setValue(SObjNode sObjNode, T target) {
-        SObjNode firstV = sObjNode.getCar();
-        SObjNode leftV = sObjNode.getCdr();
-
+    private static <T> T setValue(String sObj, T target) {
+        String firstV = S$.car(sObj);
+        String leftV = S$.cdr(sObj);
         // Key
-        if (firstV != null && leftV != null) {
-            String key = firstV.getNodeValue();
-            if (!(key.equals(OBJECT_NAME) || key.equals(LIST_NAME))) {
-                String value = leftV.getCar().getNodeValue();
+        if (!S$.isNull(firstV) && !S$.isNull(leftV)) {
+            if (!(firstV.equals(OBJECT_NAME) || firstV.equals(LIST_NAME))) {
+                String key = firstV;
+                String value = S$.car(leftV);
                 if (C$.isSObj(value)) {
                     String pkgName = target.getClass().getPackage().getName();
                     String clazzName = key.substring(0, 1).toUpperCase() + key.substring(1);
                     try {
                         Class<?> clazz = Class.forName(pkgName + "." + clazzName);
-                        Object instance = setValue(leftV.getCar(), clazz.getDeclaredConstructor().newInstance());
+                        Object instance = setValue(S$.car(leftV), clazz.getDeclaredConstructor().newInstance());
                         putField(target, key, instance);
                     } catch (ClassNotFoundException | NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
@@ -225,7 +223,7 @@ public class SObjParser {
                 } else if (C$.isList(value)) {
                     String pkgName = target.getClass().getPackage().getName();
                     String clazzName = key.substring(0, 1).toUpperCase() + key.substring(1);
-                    T arrInstance = setArrayValue(leftV.getCar(), pkgName, clazzName);
+                    T arrInstance = setArrayValue(S$.car(leftV), pkgName, clazzName);
                     putField(target, key, arrInstance);
                     // *list process had been done above, don't need to process by `setValue` ever.
                     return arrInstance;
@@ -237,12 +235,12 @@ public class SObjParser {
         }
 
         // car is a list
-        if (firstV != null && firstV.isList()) {
+        if (!S$.isNull(firstV) && S$.isList(firstV)) {
             setValue(firstV, target);
         }
 
         // not end list
-        if (leftV != null && leftV.isList()) {
+        if (!S$.isNull(leftV) && S$.isList(leftV)) {
             setValue(leftV, target);
         }
 
@@ -294,11 +292,6 @@ public class SObjParser {
                 e.printStackTrace();
             }
         }
-    }
-
-
-    public static SObjNode getRootNode(String sObj) {
-        return new SObjNode(sObj);
     }
 
 }
