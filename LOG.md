@@ -30,4 +30,7 @@ change `InValidSyntaxException` to `InvalidSyntaxExeption`
 * Add `deep` function, and it's test
 * Add `beautify` function for SObj
 
+## 2020-12-26
+* Switched from `SObjNOde` to `SObjTable` that improved the query performance.
+
 ## later

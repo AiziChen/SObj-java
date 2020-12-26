@@ -137,7 +137,7 @@ Goods secondGood = goodsNode.getValue(1, Goods.class);
 // index third value of the `goods`:
 Goods thirdGood = goodsNode.getValue(2, Goods.class);
 // out of index indexing will produce `null`:
-Goods nullGood = goodsNode.getValue(112, Goods.class);//.getGoods(Goods.class);
+Goods nullGood = goodsNode.getValue(112, Goods.class);
 ```
 > 3.SObj Override
 ```java
