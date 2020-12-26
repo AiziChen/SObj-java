@@ -108,7 +108,7 @@ public class C$ {
     }
 
     public static Object toTypeValue(String value) {
-        if (value.length() > 1) {
+        if (value.length() >= 1) {
             char c1 = value.charAt(0);
             if (c1 == '\"') {
                 return value.substring(1, value.length() - 1);

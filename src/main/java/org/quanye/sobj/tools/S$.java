@@ -183,7 +183,7 @@ public class S$ {
                 table.put(index, toSObjTable(new SObjTable<>(), ele));
                 toArraySObjTable(table, index + 1, cdr(sObj));
             } else {
-                toSObjTable(new SObjTable<>(), ele);
+                table.put(index, toSObjTable(new SObjTable<>(), ele));
             }
         } else if (isNull(cdr(sObj))) {
             table.put(index, C$.toTypeValue(ele));

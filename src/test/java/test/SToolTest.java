@@ -12,10 +12,11 @@ import org.quanye.sobj.tools.C$;
 
 public class SToolTest {
     @Test
-    public void toSObjTableTest() throws InvalidSObjSyntaxException {
+    public void toSObjTableTest() throws Exception {
         User u1 = BaseTest.getU1();
         String u1SObj = SObjParser.fromObject(u1);
         SObjTable<Object, Object> st = STool.toSObjTable(u1SObj);
+        System.out.println(st);
 
         Integer id = st.getValue("id", Integer.class);
         assert id.equals(u1.getId());
@@ -26,12 +27,10 @@ public class SToolTest {
         assert glassDegree.toString().equals(u1.getGlasses().getDegree().toString());
 
         SObjTable<Object, Object> sn = st.getNode("goods");
-        assert sn.getValue(0, Goods.class).toString()
-                .equals(u1.getGoods()[0].toString());
-        assert sn.getValue(1, Goods.class).toString()
-                .equals(u1.getGoods()[1].toString());
-        assert sn.getValue(2, Goods.class).toString()
-                .equals(u1.getGoods()[2].toString());
+        for (int i = 0; i < sn.listLength(); ++i) {
+            assert sn.getValue(i, Goods.class).toString()
+                    .equals(u1.getGoods()[i].toString());
+        }
         assert sn.listIndex(3) == null;
 
         sn = st.getNode("behaviors");
