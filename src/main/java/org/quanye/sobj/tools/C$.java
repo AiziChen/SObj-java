@@ -48,6 +48,9 @@ public class C$ {
                 || cName.equals("java.lang.Short");
     }
 
+    public static boolean isStringType(Class<?> clazz) {
+        return clazz.getName().equals("java.lang.String");
+    }
 
     public static String trimStr(String value) {
         if (value.length() > 1 && value.charAt(0) == '\"') {

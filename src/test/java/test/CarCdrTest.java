@@ -47,6 +47,10 @@ public class CarCdrTest {
         first = S$.car(sexp);
         assert first.equals("*list");
 
+        sexp = "(1\"hello\"\"world\")";
+        first = S$.car(sexp);
+        assert first.equals("1");
+
         sexp = "(*list \"Shopping\" \"Running\" \"Football\")";
         first = S$.car(sexp);
         assert first.equals("*list");
@@ -91,6 +95,10 @@ public class CarCdrTest {
         assert left.equals("(\"Shop\\\"ping\" \"Run \\\" ning\" \"Football\")");
         left = S$.cdr(left);
         assert left.equals("(\"Run \\\" ning\" \"Football\")");
+
+        sexp = "(1\"hello\"\"world\")";
+        left = "(\"hello\"\"world\")";
+        assert S$.cdr(sexp).equals(left);
 
         sexp = "()";
         left = S$.cdr(sexp);

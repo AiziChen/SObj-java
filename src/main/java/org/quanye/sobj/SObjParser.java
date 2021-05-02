@@ -196,17 +196,39 @@ public class SObjParser {
             }
         } else {
             String carV = S$.car(arrEleNode);
+            Class<?> targetType = C$.getValueType(carV);
+            boolean isDiffType = false;
             while (S$.isPair(arrEleNode)) {
                 String v = S$.car(arrEleNode);
-                v = C$.trimStr(v);
                 list.add(v);
+                if (targetType != C$.getValueType(v)) {
+                    isDiffType = true;
+                }
                 arrEleNode = S$.cdr(arrEleNode);
             }
             int lSize = list.size();
             if (!S$.isNull(carV) && lSize > 0) {
-                Object target = Array.newInstance(C$.getValueType(carV), lSize);
+                Object target;
+                if (isDiffType) {
+                    target = Array.newInstance(Object.class, lSize);
+                } else {
+                    target = Array.newInstance(targetType, lSize);
+                }
                 for (int i = 0; i < lSize; ++i) {
-                    Array.set(target, i, list.get(i));
+                    Object obj = list.get(i);
+                    Class<?> tt = C$.getValueType((String)obj);
+                    if (C$.isStringType(tt)) {
+                        obj = C$.trimStr((String)obj);
+                        Array.set(target, i, obj);
+                    } else {
+                        try {
+                            obj = targetType.getDeclaredConstructor(String.class).newInstance(obj);
+                            Array.set(target, i, obj);
+                        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                            e.printStackTrace();
+                            throw new RuntimeException("Unknown type");
+                        }
+                    }
                 }
                 return (T) target;
             }
