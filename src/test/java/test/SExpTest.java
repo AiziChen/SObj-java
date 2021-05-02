@@ -53,6 +53,15 @@ public class SExpTest {
 
         s = ")))(((";
         assert !validSexp(s);
+
+        s = "\"hello\"";
+        assert validSexp(s);
+
+        s = "112";
+        assert validSexp(s);
+
+        s = "2.23";
+        assert validSexp(s);
     }
 
     @Test

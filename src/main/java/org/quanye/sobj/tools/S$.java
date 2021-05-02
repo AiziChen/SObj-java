@@ -60,21 +60,25 @@ public class S$ {
     }
 
     public static boolean validSexp(String sexp) {
-        int lb = 0;
-        int rb = 0;
+        int sb = 0;
+        int cb = 0;
         int i = 0;
         int sLen = sexp.length();
         for (; i < sLen; ++i) {
             if (BRACKET_START_C == sexp.charAt(i)) {
-                lb++;
+                sb++;
+                if (cb >= sb) {
+                    return false;
+                }
             } else if (BRACKET_CLOSE_C == sexp.charAt(i)) {
-                rb++;
-                if (rb == lb) {
+                cb++;
+                if (cb == sb) {
+                    ++i;
                     break;
                 }
             }
         }
-        return (lb == rb) && ((i + 1) == sLen);
+        return (sb == cb) && (i == sLen);
     }
 
 

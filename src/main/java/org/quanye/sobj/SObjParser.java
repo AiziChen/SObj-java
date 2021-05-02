@@ -64,6 +64,12 @@ public class SObjParser {
             }
             sb.append(BRACKET_CLOSE);
             result.append(sb);
+        } else if (C$.isPrimitive(clazz)) {
+            if (clazz.getName().equals("java.lang.String")) {
+                result.append("\"").append(obj).append("\"");
+            } else {
+                result.append(obj);
+            }
         } else {
             // Otherwise clazz is an object
             StringBuilder sb = new StringBuilder(BRACKET_OBJECT);// + obj.getClass().getSimpleName());
@@ -149,6 +155,12 @@ public class SObjParser {
             Class<?> compClazz = clazz.getComponentType();
             String pkgName = compClazz.getPackage().getName();
             return setArrayValue(sObj, pkgName, compClazz.getSimpleName());
+        } else if (C$.isPrimitive(clazz)) {
+            try {
+                return clazz.getDeclaredConstructor(String.class).newInstance(sObj);
+            } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                return null;
+            }
         } else {
             try {
                 return setValue(sObj, clazz.getDeclaredConstructor().newInstance());

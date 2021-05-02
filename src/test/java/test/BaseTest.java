@@ -30,6 +30,14 @@ public class BaseTest {
         String u1SObj = SObjParser.fromObject(u1);
         System.out.println("=====serialize Object Test Result=====\n" + u1SObj);
 
+        // Parse to Primitive Object
+        String sn = SObjParser.fromObject(1);
+        assert sn.equals("1");
+        String ss = SObjParser.fromObject("test object");
+        assert ss.equals("\"test object\"");
+        String sd = SObjParser.fromObject(2.32);
+        assert sd.equals("2.32");
+
         // Parse to List Object
         String goods = SObjParser.fromObject(BaseTest.goods);
         System.out.println("=====serialize Array-Object Test Result=====\n" + goods);
@@ -55,8 +63,15 @@ public class BaseTest {
         System.out.println("=====deserialize to Object result=====\n"
                 + "u1 = " + result);
 
-        String goodsSobj = SObjParser.fromObject(goods);
-        Goods[] goods = SObjParser.toObject(goodsSobj, Goods[].class);
+        Integer in = SObjParser.toObject("11", Integer.class);
+        assert 11 == in;
+        Double dn = SObjParser.toObject("1.32", Double.class);
+        assert 1.32 == dn;
+        String s = SObjParser.toObject("test str", String.class);
+        assert "test str".equals(s);
+
+        String goodsSObj = SObjParser.fromObject(goods);
+        Goods[] goods = SObjParser.toObject(goodsSObj, Goods[].class);
         System.out.println("=====deserialize to Array-Object result=====\n" + Arrays.toString(goods));
     }
 
