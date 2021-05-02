@@ -48,7 +48,7 @@ https://github.com/AiziChen/SObj-typescript.git
 }
 ```
 
-### Normal SObj and Array-Based-SObj
+### SObj's Object
 > Normal SObj
 ```scheme
 (*obj
@@ -85,6 +85,11 @@ https://github.com/AiziChen/SObj-typescript.git
   (*obj (name "西红柿")
     (price 2.5)
     (isVegetable #t)))
+```
+> Primitive SObj
+
+include string, integer, double, float, char, 
+```scheme
 ```
 
 ### Performance Test - In (Intel I3 8300, JDK 11.0.8)

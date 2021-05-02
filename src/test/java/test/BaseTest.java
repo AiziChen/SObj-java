@@ -67,7 +67,7 @@ public class BaseTest {
         assert 11 == in;
         Double dn = SObjParser.toObject("1.32", Double.class);
         assert 1.32 == dn;
-        String s = SObjParser.toObject("test str", String.class);
+        String s = SObjParser.toObject("\"test str\"", String.class);
         assert "test str".equals(s);
 
         String goodsSObj = SObjParser.fromObject(goods);

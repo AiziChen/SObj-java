@@ -156,6 +156,7 @@ public class SObjParser {
             String pkgName = compClazz.getPackage().getName();
             return setArrayValue(sObj, pkgName, compClazz.getSimpleName());
         } else if (C$.isPrimitive(clazz)) {
+            sObj = C$.trimStr(sObj);
             try {
                 return clazz.getDeclaredConstructor(String.class).newInstance(sObj);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
