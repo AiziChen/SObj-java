@@ -59,7 +59,7 @@ public class SObjParser {
                 if (v instanceof String) {
                     sb.append('\"').append(v).append('\"');
                 } else {
-                    sb.append(fromObject(v));
+                    sb.append(' ').append(fromObject(v));
                 }
             }
             sb.append(BRACKET_CLOSE);
