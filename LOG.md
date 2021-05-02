@@ -33,4 +33,9 @@ change `InValidSyntaxException` to `InvalidSyntaxExeption`
 ## 2020-12-26
 * Switched from `SObjNOde` to `SObjTable` that improved the query performance.
 
+## 2021-05-02
+* Added support for Primitive-Object parse.
+* primitive-type array serialize bug fixed.
+* difference type in array serialize bug fixed.
+
 ## later
