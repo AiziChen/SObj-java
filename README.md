@@ -5,6 +5,7 @@ This is the Java Language version.
 JavaScript version is also here:
 https://github.com/AiziChen/SObj-typescript.git
 
+
 ### Compare between SObj & JSON
 > SObj
 ```scheme
@@ -48,6 +49,7 @@ https://github.com/AiziChen/SObj-typescript.git
 }
 ```
 
+
 ### SObj's Object
 > Normal SObj
 ```scheme
@@ -88,9 +90,8 @@ https://github.com/AiziChen/SObj-typescript.git
 ```
 > Primitive SObj
 
-include string, integer, double, float, char, 
-```scheme
-```
+Support for string, integer, long, double, float, char, boolean, byte, short data-type.
+
 
 ### Performance Test - In (Intel I3 8300, JDK 11.0.8)
 ```shell
@@ -100,10 +101,13 @@ include string, integer, double, float, char,
 User{id=1, name='DavidChen', age=25, birth=Thu Sep 24 09:50:07 CST 2020, glasses=Glasses{id=1, degree=203.3, color=RED-BLACK}, height=167.3, goods=[Goods{name='火龙果', price=2.3, isVegetable=false}, Goods{name='雪梨', price=3.2, isVegetable=false}, Goods{name='西红柿', price=2.5, isVegetable=true}], behaviors=[Shopping, Running, Football]}
 >> Parse 9999 objects total time: 969ms <<
 ```
+
+
 ## Syntax
 * `(*obj ...)`  - Object
 * `(key value)` - Key-Value Pair
 * `(*list ...)` - Array
+
 
 ## Usage Example
 > 1.Basic Usage.
