@@ -90,7 +90,7 @@ https://github.com/AiziChen/SObj-typescript.git
 ```
 > Primitive SObj
 
-Support for string, integer, long, double, float, char, boolean, byte, short data-type.
+Support for the primitive datatypes of string, integer, long, double, float, char, boolean, byte and short.
 
 
 ### Performance Test - In (Intel I3 8300, JDK 11.0.8)
@@ -104,9 +104,10 @@ User{id=1, name='DavidChen', age=25, birth=Thu Sep 24 09:50:07 CST 2020, glasses
 
 
 ## Syntax
-* `(*obj ...)`  - Object
-* `(key value)` - Key-Value Pair
-* `(*list ...)` - Array
+* `(*obj ...)`  - Object SObj
+* `(key value)` - Key-Value Pair SObj
+* `(*list ...)` - Array SObj
+* primitives-data-type - Value SObj
 
 
 ## Usage Example
